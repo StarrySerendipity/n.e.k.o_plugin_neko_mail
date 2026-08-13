@@ -10,13 +10,13 @@ v0.2 优化:
 """
 
 import threading
-import time
-from datetime import datetime, date
+from datetime import datetime
 from typing import Optional
+
 from .client import NekoMailClient
-from .models import EmailMessage, EmailSummary, EmailSnippet, FolderInfo
-from .parser import classify_email_type
+from .models import EmailMessage, EmailSnippet, EmailSummary
 from .operation_log import OperationLog
+from .parser import classify_email_type
 
 
 class NekoMailPlugin:

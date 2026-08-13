@@ -40,7 +40,6 @@ def test_plugin_class_importable():
         root / "plugins" / "neko_mail" / "__init__.py"
     )
     assert spec is not None, "Should be able to create spec for __init__.py"
-    mod = importlib.util.module_from_spec(spec)
     # 注意：这里不执行模块，因为可能依赖 N.E.K.O SDK
     # 只验证文件可以被 spec 识别
 

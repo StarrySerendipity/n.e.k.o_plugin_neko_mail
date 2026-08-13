@@ -20,20 +20,18 @@ LLM 工具:
 
 from __future__ import annotations
 
-import os
 import threading
-from typing import Any, Dict, List, Optional
-from pathlib import Path
+from typing import Optional
 
 from plugin.sdk.plugin import (
+    Err,
     NekoPluginBase,
-    neko_plugin,
-    plugin_entry,
+    Ok,
+    SdkError,
     lifecycle,
     llm_tool,
-    Ok,
-    Err,
-    SdkError,
+    neko_plugin,
+    plugin_entry,
 )
 
 from .plugin import NekoMailPlugin
@@ -160,7 +158,6 @@ class NekoMailPluginEntry(NekoPluginBase):
         # 获取动态称呼
         plugin = self._get_plugin()
         master_name = getattr(plugin, 'master_name', '主人')
-        catgirl_name = getattr(plugin, 'catgirl_name', '喵喵')
         
         count = len(new_emails)
         first_email = new_emails[0]

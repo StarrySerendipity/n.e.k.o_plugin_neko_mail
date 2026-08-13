@@ -7,8 +7,10 @@ import re
 from email.header import decode_header
 from email.utils import parseaddr
 from typing import Optional
+
 from bs4 import BeautifulSoup
-from .models import EmailMessage, Attachment
+
+from .models import Attachment, EmailMessage
 
 
 def decode_header_value(value: str) -> str:
@@ -192,7 +194,6 @@ def classify_email_type(email: EmailMessage, master_name: str = "主人", catgir
         }
     """
     subject = email.subject.lower()
-    sender = email.sender.lower()
     body = email.body_text.lower()
     combined = subject + " " + body
     
@@ -366,7 +367,6 @@ def classify_email_type(email: EmailMessage, master_name: str = "主人", catgir
 def _extract_service_name(email: EmailMessage) -> str:
     """从邮件中提取服务/平台名称"""
     sender = email.sender.lower()
-    subject = email.subject
     
     # 从发件人域名提取
     if '@' in sender:

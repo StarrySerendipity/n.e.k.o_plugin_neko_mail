@@ -10,23 +10,24 @@ v0.3 优化:
   - 优化连接超时和错误处理
 """
 
+import base64 as _b64
 import email
 import imaplib
 import os
 import re
 import smtplib
-import base64 as _b64
-from datetime import datetime, date
-from email.header import decode_header, Header
-from email.utils import parseaddr, parsedate_to_datetime, formatdate, make_msgid
-from urllib.parse import quote as url_quote
+from datetime import date, datetime
+from email.header import Header
+from email.utils import formatdate, make_msgid, parsedate_to_datetime
 from typing import Optional
-from .models import EmailMessage, Attachment, FolderInfo
+from urllib.parse import quote as url_quote
+
+from .models import EmailMessage, FolderInfo
 from .parser import (
+    classify_priority,
     decode_header_value,
     extract_email_address,
     html_to_text,
-    classify_priority,
     parse_attachment,
 )
 
@@ -106,7 +107,7 @@ class NekoMailClient:
             self._connected = False
             err_str = str(e).lower()
             if "authentication" in err_str or "login" in err_str or "password" in err_str:
-                raise RuntimeError(f"登录失败: 授权码错误,请检查配置中的 auth_code")
+                raise RuntimeError("登录失败: 授权码错误,请检查配置中的 auth_code")
             raise RuntimeError(f"连接邮箱服务器失败: {e}")
     
     def _reconnect(self):
@@ -626,7 +627,7 @@ class NekoMailClient:
             self._imap.select(folder)
             self._imap.store(uid.encode(), '+FLAGS', '\\Seen')
             return True
-        except Exception as e:
+        except Exception:
             self._reconnect()
             return False
     
